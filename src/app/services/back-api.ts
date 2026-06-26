@@ -7,14 +7,15 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class BackApi {
+  // https://hms-backend-y505.onrender.com
 
-  private urlapi = "http://localhost:4065/api/dashboard"
-  private apiUrl = 'http://localhost:4065/api/hos';
-  private upurl = 'http://localhost:4065/api/hos/update/';
-  private Departmenturl = 'http://localhost:4065/api/department';
-  private paraurl = "http://localhost:4065/api/paragraph";
-  private apiUrl1 = 'http://localhost:4065/api/appointment';
-  private authUrl = 'http://localhost:4065/api/auth';
+  private urlapi = "https://hms-backend-y505.onrender.com/api/dashboard"
+  private apiUrl = 'https://hms-backend-y505.onrender.com/api/hos';
+  private upurl = 'https://hms-backend-y505.onrender.com/api/hos/update/';
+  private Departmenturl = 'https://hms-backend-y505.onrender.com/api/department';
+  private paraurl = "https://hms-backend-y505.onrender.com/api/paragraph";
+  private apiUrl1 = 'https://hms-backend-y505.onrender.com/api/appointment';
+  private authUrl = 'https://hms-backend-y505.onrender.com/api/auth';
 
   constructor(private http: HttpClient) { }
 
@@ -126,7 +127,7 @@ export class BackApi {
       map((res: any) => {
         const paragraphs = res.data || [];
         const normalizedDept = (deptName || '').toLowerCase().trim();
-        const found = paragraphs.find((p: any) => 
+        const found = paragraphs.find((p: any) =>
           (p.department || '').toLowerCase().trim() === normalizedDept
         );
         console.log(`[BackApi] Lookup for "${deptName}":`, found ? 'MATCH FOUND' : 'NO MATCH');
