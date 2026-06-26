@@ -1,0 +1,117 @@
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <!-- RIGHT CONTENT -->
+  <div class="content-area">
+    <!-- LUXURY HERO BANNER -->
+    <div class="luxury-banner">
+      <div class="banner-overlay"></div>
+      <div class="heartbeat-svg">
+        <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
+          <path d="M0,50 L200,50 L220,30 L240,70 L260,50 L400,50 L420,10 L440,90 L460,50 L1000,50" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none"></path>
+        </svg>
+      </div>
+      
+      <div class="banner-content">
+        <div class="banner-left">
+          <span class="badge">Medical Excellence</span>
+          <h1>Hospital Departments</h1>
+          <p>Curating world-class healthcare across specialized medical sectors.</p>
+          <div class="banner-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search departments..." (input)="filterDepartments($event)">
+          </div>
+
+          <div class="banner-stats">
+            <div class="b-stat">
+              <span class="val">{{ departments.length }}</span>
+              <span class="lab">Active Sectors</span>
+            </div>
+            <div class="b-stat">
+              <span class="val">24/7</span>
+              <span class="lab">Emergency Support</span>
+            </div>
+          </div>
+        </div>
+        <div class="banner-right">
+          <button class="add-btn-luxury" routerLink="/addd">
+            <i class="fa-solid fa-plus"></i> Initialize New Department
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPARTMENT TABLE -->
+    <div class="glass-card table-card-lux" *ngIf="filteredDepartments.length > 0">
+      <div class="table-header-lux">
+        <h3>Institutional Directory</h3>
+        <p>Managing {{ filteredDepartments.length }} specialized sectors</p>
+      </div>
+
+      <div class="table-wrapper-lux">
+        <table>
+          <thead>
+            <tr>
+              <th>Department Info</th>
+              <th>Description</th>
+              <th>Staffing</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of filteredDepartments">
+              <td>
+                <div class="dept-profile-lux">
+                  <div class="dept-avatar-lux">
+                    <img *ngIf="item.image" [src]="item.image" [alt]="item.name">
+                    <i *ngIf="!item.image" class="fa-solid fa-hospital"></i>
+                  </div>
+                  <div class="dept-info-lux">
+                    <span class="name">{{ item.name }}</span>
+                    <span class="id">ID: {{ item._id?.substring(0,8) | uppercase }}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="table-desc">{{ item.description || 'Global medical standards applied.' }}</p>
+              </td>
+              <td>
+                <div class="staff-badge-lux">
+                  <i class="fa-solid fa-user-doctor"></i>
+                  <span>14 Specialists</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-pill success">
+                  <span class="dot"></span> Active
+                </span>
+              </td>
+              <td>
+                <div class="action-buttons-lux">
+                  <button class="action-btn-lux edit" (click)="Update(item._id)" title="Edit Sector">
+                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                  </button>
+                  <button class="action-btn-lux delete" (click)="Delete(item._id)" title="Decommission">
+                    <i class="fa-solid fa-trash-can"></i> Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div *ngIf="departments.length === 0" class="empty-state-lux">
+      <div class="empty-icon">
+        <i class="fa-solid fa-hospital-user"></i>
+      </div>
+      <h3>No Departments Registered</h3>
+      <p>Start by initializing your first hospital sector.</p>
+      <button class="btn-premium" routerLink="/addd">Add Department</button>
+    </div>
+  </div>
+</div>

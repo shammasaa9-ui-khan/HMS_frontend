@@ -1,0 +1,113 @@
+<!-- ================= DASHBOARD LAYOUT ================= -->
+<div class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+  <app-admin-sidebar></app-admin-sidebar>
+
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <div class="form-wrapper">
+
+      <div class="form-card">
+
+        <div class="form-header">
+          <h2>Update Doctor Details</h2>
+        </div>
+
+        <form (ngSubmit)="updateDoctor()">
+
+          <div class="form-grid">
+
+            <!-- NAME -->
+            <div class="form-group">
+              <label>Doctor Name</label>
+              <input type="text"
+                     [(ngModel)]="doctor.name"
+                     name="name"
+                     required>
+            </div>
+
+            <!-- DEPARTMENT -->
+            <div class="form-group">
+              <label>Department</label>
+              <input type="text"
+                     [(ngModel)]="doctor.department"
+                     name="department"
+                     required>
+            </div>
+
+            <!-- SPECIALIZATION -->
+            <div class="form-group">
+              <label>Specialization</label>
+              <input type="text"
+                     [(ngModel)]="doctor.specialization"
+                     name="specialization"
+                     required>
+            </div>
+
+            <!-- EXPERIENCE -->
+            <div class="form-group">
+              <label>Experience (Years)</label>
+              <input type="number"
+                     [(ngModel)]="doctor.experience"
+                     name="experience"
+                     required>
+            </div>
+
+            <!-- PHONE -->
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="text"
+                     [(ngModel)]="doctor.phone"
+                     name="phone"
+                     required>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email"
+                     [(ngModel)]="doctor.email"
+                     name="email"
+                     required>
+            </div>
+
+            <!-- STATUS -->
+            <div class="form-group">
+              <label>Availability Status</label>
+              <select [(ngModel)]="doctor.status"
+                      name="status"
+                      required>
+                <option value="Available">Available</option>
+                <option value="Unavailable">Unavailable</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Image URL</label>
+              <input type="text"
+                     [(ngModel)]="doctor.image"
+                     name="image"
+                     placeholder="https://example.com/doctor.jpg">
+            </div>
+
+          </div>
+
+          <!-- ACTION BUTTON -->
+          <div class="form-actions">
+            <button type="submit" class="update-btn">
+              Update Doctor
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>

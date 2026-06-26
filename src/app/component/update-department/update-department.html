@@ -1,0 +1,56 @@
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <!-- MAIN CONTENT -->
+  <div class="form-page-content">
+    
+    <div class="form-card-lux animate-fade-in">
+      <div class="form-header">
+        <div class="header-icon">
+          <i class="fa-solid fa-pen-nib"></i>
+        </div>
+        <div class="header-text">
+          <h2>Update Department</h2>
+          <p>Modify the configuration of your medical sector.</p>
+        </div>
+      </div>
+
+      <div class="form-body">
+        <div class="input-group">
+          <label>Department Name</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-hospital"></i>
+            <input type="text" placeholder="e.g. Cardiology" [(ngModel)]="departmentData.name">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Description</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-align-left"></i>
+            <textarea placeholder="Briefly describe the unit's specialty..." [(ngModel)]="departmentData.description"></textarea>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Cover Image URL</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-image"></i>
+            <input type="text" placeholder="https://image-link.com/photo.jpg" [(ngModel)]="departmentData.image">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-cancel" routerLink="/dp">Cancel</button>
+          <button class="btn-submit" (click)="updateDepartment()">
+            <span>Save Changes</span>
+            <i class="fa-solid fa-circle-check"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

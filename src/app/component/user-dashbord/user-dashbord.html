@@ -1,0 +1,412 @@
+<app-main-navbar></app-main-navbar>
+
+<div class="dashboard-container">
+  
+  <!-- Dashboard Nav Tabs -->
+  <div class="dashboard-tabs">
+    <button class="tab-btn" [class.active]="activeTab === 'overview'" (click)="switchTab('overview')">
+      <i class="fa-solid fa-chart-pie"></i> Overview
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'book'" (click)="switchTab('book')">
+      <i class="fa-solid fa-calendar-plus"></i> Book Appointment
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'appointments'" (click)="switchTab('appointments')">
+      <i class="fa-solid fa-calendar-days"></i> My Appointments
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'doctors'" (click)="switchTab('doctors')">
+      <i class="fa-solid fa-user-md"></i> Find Doctors
+    </button>
+  </div>
+
+  <!-- ================= OVERVIEW TAB ================= -->
+  <div class="tab-content" *ngIf="activeTab === 'overview'">
+    <!-- Welcome Banner -->
+    <div class="welcome-section">
+      <div class="welcome-text">
+        <h1>Hello, {{ userName }}! 👋</h1>
+        <p>Welcome to your personal health portal. Track your scheduled appointments, view prescriptions, and manage your health information.</p>
+      </div>
+      <div class="welcome-actions">
+        <button class="btn-premium" (click)="switchTab('book')">
+          <i class="fa-solid fa-calendar-plus"></i> Book Appointment
+        </button>
+        <button class="btn-outline" routerLink="/profile">
+          <i class="fa-solid fa-user-gear"></i> Edit Profile
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Statistics -->
+    <div class="stats-grid">
+      <div class="stat-card total-appointments" (click)="switchTab('appointments')">
+        <div class="stat-icon-wrapper">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        <div class="stat-details">
+          <h3>Total Appointments</h3>
+          <p class="stat-number">{{ totalAppointments }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card upcoming-appointments" (click)="switchTab('appointments')">
+        <div class="stat-icon-wrapper">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+        <div class="stat-details">
+          <h3>Upcoming</h3>
+          <p class="stat-number">{{ upcomingAppointments }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card completed-appointments" (click)="switchTab('appointments')">
+        <div class="stat-icon-wrapper">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div class="stat-details">
+          <h3>Completed</h3>
+          <p class="stat-number">{{ completedAppointments }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card prescriptions" (click)="switchTab('appointments')">
+        <div class="stat-icon-wrapper">
+          <i class="fa-solid fa-prescription"></i>
+        </div>
+        <div class="stat-details">
+          <h3>Prescriptions</h3>
+          <p class="stat-number">{{ prescriptionsReceived }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="recent-activity-section">
+      <div class="activity-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-clock-rotate-left"></i> Recent Appointments Summary</h2>
+          <p>Your latest appointments and consult history</p>
+        </div>
+        <div class="card-body">
+          <div *ngIf="isLoading" class="loading-spinner">
+            <span class="spinner"></span>
+            <p>Loading summary...</p>
+          </div>
+          <div *ngIf="!isLoading && appointmentList.length === 0" class="empty-state">
+            <i class="fa-solid fa-calendar-xmark"></i>
+            <p>No appointments booked yet.</p>
+          </div>
+          <div class="table-responsive" *ngIf="!isLoading && appointmentList.length > 0">
+            <table class="appointments-table">
+              <thead>
+                <tr>
+                  <th>Doctor</th>
+                  <th>Department</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let app of appointmentList.slice(0, 3)">
+                  <td><strong>{{ app.doctorName }}</strong></td>
+                  <td><span class="dept-badge">{{ app.departmentName }}</span></td>
+                  <td>{{ app.date | date:'medium' }}</td>
+                  <td>
+                    <span class="status-badge" [ngClass]="{
+                      'pending': !app.status || app.status === 'Pending',
+                      'confirmed': app.status === 'Confirmed',
+                      'completed': app.status === 'Completed',
+                      'cancelled': app.status === 'Cancelled'
+                    }">
+                      {{ app.status || 'Pending' }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= BOOK APPOINTMENT TAB ================= -->
+  <div class="tab-content" *ngIf="activeTab === 'book'">
+    <div class="booking-panel">
+      <div class="panel-header">
+        <h2><i class="fa-solid fa-calendar-check"></i> Book a New Appointment</h2>
+        <p>Fill out the details below to request a medical consultation slot.</p>
+      </div>
+
+      <form (ngSubmit)="bookAppointment()" class="booking-form-dashboard">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="patientName">Patient Name</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" id="patientName" [(ngModel)]="bookingData.patientName" name="patientName" required readonly />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-phone"></i>
+              <input type="text" id="phone" placeholder="10-digit number" [(ngModel)]="bookingData.phone" name="phone" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="doctorName">Doctor Name</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-user-md"></i>
+              <input type="text" id="doctorName" placeholder="Dr. John Doe" [(ngModel)]="bookingData.doctorName" name="doctorName" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="departmentName">Department</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-stethoscope"></i>
+              <input type="text" id="departmentName" placeholder="e.g. Cardiology" [(ngModel)]="bookingData.departmentName" name="departmentName" required />
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="date">Date & Time</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-clock"></i>
+              <input type="datetime-local" id="date" [(ngModel)]="bookingData.date" name="date" required />
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="message">Message / Symptoms</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-comment-medical"></i>
+              <textarea id="message" placeholder="Provide any details about your symptoms or medical concern..." [(ngModel)]="bookingData.message" name="message" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="submit-btn">
+            <i class="fa-solid fa-circle-check"></i> Book Now
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MY APPOINTMENTS TAB ================= -->
+  <div class="tab-content" *ngIf="activeTab === 'appointments'">
+    <!-- Upcoming Appointments Section -->
+    <div class="upcoming-section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-clock"></i> Upcoming Appointments</h2>
+        <p>Track, reschedule, or cancel your scheduled consults.</p>
+      </div>
+
+      <div *ngIf="isLoading" class="loading-spinner">
+        <span class="spinner"></span>
+        <p>Loading appointments...</p>
+      </div>
+
+      <div *ngIf="!isLoading && upcomingList.length === 0" class="empty-state">
+        <i class="fa-solid fa-calendar-minus"></i>
+        <p>No upcoming appointments. Need a checkup?</p>
+        <button class="btn-premium" (click)="switchTab('book')">Book Appointment</button>
+      </div>
+
+      <div class="upcoming-grid" *ngIf="!isLoading && upcomingList.length > 0">
+        <div class="upcoming-card" *ngFor="let app of upcomingList">
+          <div class="card-side-bar"></div>
+          <div class="upcoming-card-content">
+            <div class="upcoming-main-info">
+              <h3>{{ app.doctorName }}</h3>
+              <span class="dept-badge">{{ app.departmentName }}</span>
+            </div>
+            
+            <div class="upcoming-date-info">
+              <i class="fa-solid fa-calendar-day"></i>
+              <span *ngIf="reschedulingAppId !== app._id">{{ app.date | date:'medium' }}</span>
+              
+              <!-- Rescheduling Form Inline -->
+              <div class="reschedule-form" *ngIf="reschedulingAppId === app._id">
+                <input type="datetime-local" [(ngModel)]="newScheduleDate" class="reschedule-input" />
+                <div class="reschedule-actions">
+                  <button class="btn-save-reschedule" (click)="saveReschedule(app._id)" title="Save Date">
+                    <i class="fa-solid fa-check"></i> Save
+                  </button>
+                  <button class="btn-cancel-reschedule" (click)="cancelReschedule()" title="Cancel">
+                    <i class="fa-solid fa-times"></i> Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="upcoming-status-info">
+              <span class="status-badge" [ngClass]="{
+                'pending': !app.status || app.status === 'Pending',
+                'confirmed': app.status === 'Confirmed'
+              }">
+                {{ app.status || 'Pending' }}
+              </span>
+            </div>
+
+            <div class="upcoming-actions" *ngIf="reschedulingAppId !== app._id">
+              <button class="btn-action reschedule-btn" (click)="startReschedule(app)">
+                <i class="fa-solid fa-clock"></i> Reschedule
+              </button>
+              <button class="btn-action cancel-btn" (click)="cancelAppointment(app._id)">
+                <i class="fa-solid fa-ban"></i> Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full History Section -->
+    <div class="history-section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-clipboard-list"></i> Full Appointment History</h2>
+        <p>A history of all your completed, pending, or cancelled consultations</p>
+      </div>
+
+      <div class="history-content">
+        <div *ngIf="isLoading" class="loading-spinner">
+          <span class="spinner"></span>
+        </div>
+        <div *ngIf="!isLoading && appointmentList.length === 0" class="empty-state">
+          <p>No appointment records found.</p>
+        </div>
+
+        <div class="table-responsive" *ngIf="!isLoading && appointmentList.length > 0">
+          <table class="appointments-table">
+            <thead>
+              <tr>
+                <th>Doctor</th>
+                <th>Department</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Prescription / Doctor Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let app of appointmentList">
+                <td class="doc-cell">
+                  <strong>{{ app.doctorName }}</strong>
+                </td>
+                <td><span class="dept-badge">{{ app.departmentName }}</span></td>
+                <td>{{ app.date | date:'medium' }}</td>
+                <td>
+                  <span class="status-badge" [ngClass]="{
+                    'pending': !app.status || app.status === 'Pending',
+                    'confirmed': app.status === 'Confirmed',
+                    'completed': app.status === 'Completed',
+                    'cancelled': app.status === 'Cancelled'
+                  }">
+                    {{ app.status || 'Pending' }}
+                  </span>
+                </td>
+                <td class="prescription-cell">
+                  <div *ngIf="app.prescription" class="prescription-box">
+                    <i class="fa-solid fa-file-medical"></i>
+                    <span>{{ app.prescription }}</span>
+                  </div>
+                  <span *ngIf="!app.prescription" class="no-prescription">No notes/prescriptions yet</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FIND DOCTORS TAB ================= -->
+  <div class="tab-content" *ngIf="activeTab === 'doctors'">
+    <div class="doctors-search-panel">
+      <div class="panel-header">
+        <h2><i class="fa-solid fa-user-md"></i> Available Doctors</h2>
+        <p>Browse our team of specialists, check their availability status, and book instantly.</p>
+      </div>
+
+      <!-- Filters Row -->
+      <div class="doctors-filters">
+        <div class="search-box-inline">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input 
+            type="text" 
+            placeholder="Search doctor name or specialty..." 
+            [(ngModel)]="searchQuery" 
+            (ngModelChange)="filterDoctors()" 
+          />
+        </div>
+
+        <div class="specialty-dropdown-container">
+          <i class="fa-solid fa-stethoscope"></i>
+          <select [(ngModel)]="selectedSpecialty" (change)="filterDoctors()">
+            <option value="">All Specialties / Departments</option>
+            <option *ngFor="let dept of departmentsList" [value]="dept.department">
+              {{ dept.department }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Doctors Grid -->
+      <div class="doctors-grid">
+        <div class="doctor-card-premium" *ngFor="let doctor of filteredDoctors">
+          <div class="doctor-card-header">
+            <div class="doctor-profile-image">
+              <img [src]="doctor.image" [alt]="doctor.name" (error)="onImageError($event)" />
+            </div>
+            <div class="doctor-meta">
+              <h3>{{ doctor.name }}</h3>
+              <p class="specialization">{{ doctor.specialization || 'General Specialist' }}</p>
+              <div class="doc-status-badge" [ngClass]="doctor.status?.toLowerCase() || 'available'">
+                <span class="status-dot"></span> {{ doctor.status || 'Available' }}
+              </div>
+            </div>
+          </div>
+
+          <div class="doctor-card-body">
+            <div class="doc-info-item">
+              <i class="fa-solid fa-hospital-user"></i>
+              <span>Department: <strong>{{ doctor.department }}</strong></span>
+            </div>
+            <div class="doc-info-item">
+              <i class="fa-solid fa-graduation-cap"></i>
+              <span>Qualification: <strong>{{ doctor.qualification }}</strong></span>
+            </div>
+            <div class="doc-info-item">
+              <i class="fa-solid fa-award"></i>
+              <span>Experience: <strong>{{ doctor.experience }} Years</strong></span>
+            </div>
+            <div class="doc-info-item" *ngIf="doctor.phone">
+              <i class="fa-solid fa-phone"></i>
+              <span>Contact: {{ doctor.phone }}</span>
+            </div>
+          </div>
+
+          <div class="doctor-card-footer">
+            <button 
+              class="btn-premium book-doc-btn" 
+              [disabled]="doctor.status === 'Unavailable'" 
+              (click)="selectDoctorForBooking(doctor)">
+              <i class="fa-solid fa-calendar-check"></i> Book Consultation
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Doctors State -->
+      <div class="empty-state" *ngIf="filteredDoctors.length === 0">
+        <i class="fa-solid fa-user-slash"></i>
+        <p>No doctors found matching your search criteria.</p>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,140 @@
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <div class="dashboard-content">
+    <!-- Header -->
+    <div class="dashboard-top">
+      <div>
+        <h2>Appointment Admin Panel</h2>
+        <p>Monitor, manage, and update hospital appointment records from one place.</p>
+      </div>
+      <button class="refresh-btn" (click)="getAppointments()">Refresh</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <span>Total</span>
+        <h3>{{ totalAppointments }}</h3>
+        <p>All appointments</p>
+      </div>
+
+      <div class="stat-card confirmed">
+        <span>Confirmed</span>
+        <h3>{{ confirmedAppointments }}</h3>
+        <p>Approved bookings</p>
+      </div>
+
+      <div class="stat-card completed">
+        <span>Completed</span>
+        <h3>{{ completedAppointments }}</h3>
+        <p>Finished visits</p>
+      </div>
+
+      <div class="stat-card cancelled">
+        <span>Cancelled</span>
+        <h3>{{ cancelledAppointments }}</h3>
+        <p>Cancelled records</p>
+      </div>
+
+      <div class="stat-card pending">
+        <span>Pending</span>
+        <h3>{{ pendingAppointments }}</h3>
+        <p>Waiting for action</p>
+      </div>
+    </div>
+
+    <!-- Table Only -->
+    <div class="panel-card table-card">
+      <div class="card-head table-tools">
+        <div>
+          <h3>Appointment List</h3>
+          <p>Search, filter, update, or delete appointments.</p>
+        </div>
+
+        <div class="toolbar">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search appointments..."
+            [(ngModel)]="searchText"
+            (input)="applyFilters()"
+          />
+
+          <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
+            <option value="All">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+
+          <button class="secondary-btn" (click)="resetFilters()">Reset</button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Doctor</th>
+              <th>Department</th>
+              <th>Date</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of filteredAppointments">
+              <td class="patient-cell">{{ item.patientName }}</td>
+              <td class="doctor-cell">
+                <div class="doctor-info">
+                  <i class="fa-solid fa-user-doctor"></i>
+                  <span>{{ item.doctorName }}</span>
+                </div>
+              </td>
+              <td><span class="dept-badge">{{ item.departmentName }}</span></td>
+              <td class="date-cell">
+                <div class="date-info">
+                  <i class="fa-solid fa-calendar-day"></i>
+                  <span>{{ item.date | date:'mediumDate' }}</span>
+                </div>
+                <small>{{ item.date | date:'shortTime' }}</small>
+              </td>
+              <td>{{ item.phone }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="(item.status || 'Pending').toLowerCase()">
+                  {{ item.status || 'Pending' }}
+                </span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="confirm" (click)="updateStatus(item._id, 'Confirmed')" title="Confirm">
+                    <i class="fa-solid fa-check"></i>
+                  </button>
+                  <button class="complete" (click)="updateStatus(item._id, 'Completed')" title="Complete">
+                    <i class="fa-solid fa-circle-check"></i>
+                  </button>
+                  <button class="cancel" (click)="updateStatus(item._id, 'Cancelled')" title="Cancel">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                  <button class="delete" (click)="deleteAppointment(item._id)" title="Delete">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngIf="filteredAppointments.length === 0">
+              <td colspan="7" class="empty-row">No appointments found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <span class="logo-icon">⦿</span>
+    <span class="logo-text">ProHealth</span>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">
+      <img *ngIf="doctorAvatar" [src]="doctorAvatar" [alt]="doctorName" />
+      <span *ngIf="!doctorAvatar">{{ initial }}</span>
+    </div>
+    <div class="user-details">
+      <p class="user-name">{{ doctorName }}</p>
+      <p class="user-role">Doctor Panel</p>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul>
+      <li *ngFor="let item of menuItems">
+        <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <i [class]="item.icon"></i>
+          <span>{{ item.name }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a routerLink="/" class="home-link">
+      <i class="fa-solid fa-house"></i>
+      <span>Back to Home</span>
+    </a>
+  </div>
+</aside>

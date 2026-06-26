@@ -1,0 +1,106 @@
+<app-main-navbar></app-main-navbar>
+
+<div class="profile-container">
+  <!-- Left Side: Profile Preview Card -->
+  <div class="profile-preview-card">
+    <div class="avatar-container">
+      <div class="avatar-large">
+        {{ name.charAt(0) | uppercase }}
+      </div>
+      <div class="role-badge" [ngClass]="role">
+        {{ role | titlecase }}
+      </div>
+    </div>
+    <h2>{{ name }}</h2>
+    <p class="user-email">{{ email }}</p>
+    <div class="member-since">
+      <i class="fa-solid fa-shield-halved"></i>
+      <span>Secure Account Access</span>
+    </div>
+  </div>
+
+  <!-- Right Side: Edit Profile Sections -->
+  <div class="profile-edit-panel">
+    <div class="panel-header">
+      <h2>Profile Settings</h2>
+      <p>Manage your account settings, contact information, and security options.</p>
+    </div>
+
+    <!-- Alert Messages -->
+    <div class="alert alert-success" *ngIf="successMessage">
+      <i class="fa-solid fa-circle-check"></i> {{ successMessage }}
+    </div>
+
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      <i class="fa-solid fa-circle-exclamation"></i> {{ errorMessage }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="profile-form">
+      
+      <!-- Section 1: Personal Information -->
+      <div class="form-section">
+        <h3 class="section-title"><i class="fa-solid fa-user-circle"></i> Personal Information</h3>
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input 
+              type="text" 
+              id="name" 
+              [(ngModel)]="name" 
+              name="name" 
+              required 
+              placeholder="Your Full Name"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Contact Details -->
+      <div class="form-section">
+        <h3 class="section-title"><i class="fa-solid fa-address-book"></i> Contact Details</h3>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+            <input 
+              type="email" 
+              id="email" 
+              [(ngModel)]="email" 
+              name="email" 
+              required 
+              placeholder="yourname@example.com"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Change Password -->
+      <div class="form-section">
+        <h3 class="section-title"><i class="fa-solid fa-lock"></i> Change Password</h3>
+        <div class="form-group">
+          <label for="password">New Password (Leave blank to keep current)</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-key"></i>
+            <input 
+              type="password" 
+              id="password" 
+              [(ngModel)]="password" 
+              name="password" 
+              placeholder="••••••••"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Action Button -->
+      <div class="form-actions">
+        <button type="submit" class="submit-btn" [disabled]="isLoading">
+          <span *ngIf="!isLoading"><i class="fa-solid fa-save"></i> Update Profile</span>
+          <span *ngIf="isLoading" class="spinner-small"></span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

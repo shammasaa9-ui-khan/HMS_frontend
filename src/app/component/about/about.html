@@ -1,0 +1,104 @@
+<app-main-navbar></app-main-navbar>
+<!-- <app-slaid-bar></app-slaid-bar> -->
+<section class="about">
+  <div class="about-container">
+
+    <!-- LEFT IMAGE -->
+    <div class="about-image">
+      <img [src]="imagePath" alt="ProHealth Hospital" />
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="about-content">
+      <h5>ABOUT US</h5>
+      <h2>
+        Welcome to <span>KIMS Hospital</span>
+      </h2>
+
+      <p>
+        KIMIS Hospital is the most modern private hospital in Kottakkal with the world’s best treatment,
+        personalized service, and state-of-the-art facilities.
+        We are now one of the state's major health providers,
+        offering a broad variety of specialty medical, surgical, and mental health treatments, as well as
+        rehabilitation, critical care, outpatient, and community programs.
+      </p>
+
+      <p>
+         KIMIS Hospital was built with love by its founders in 2002,
+         who desire to create an atmosphere of peace and tranquillity where
+         people can recover from their illness and start enjoying life again.</p>
+
+
+      <p>Our doctors are well-experienced, highly skilled, and talented.
+         They use advanced technology in diagnosing patients, and then
+         they recommend the best course of treatment according to each case.
+          A group of qualified staff members works alongside our doctors to
+           provide the best possible service to our patients. All patients
+            are provided with accommodation in the hospital’s comfortable and cosy rooms,
+        which are designed to create a homely atmosphere and
+         fully meet the requirements of modern standards.</p>
+
+
+    </div>
+
+  </div>
+</section>
+
+<section class="trust-section">
+
+  <!-- TOP TEXT -->
+  <div class="top-text">
+    <p>
+     You can trust us because we are not only focused on high-tech equipment and
+     competent staff – our main priority is patient safety. We also follow the
+      guidelines set by the country's leading experts in the field,
+      and that's why our patients receive proper treatment and rehabilitation.
+    </p>
+  </div>
+
+  <!-- IMAGE ROW -->
+  <div class="image-row">
+    <div class="image-card" *ngFor="let img of images">
+      <img [src]="img.src" [alt]="img.alt" />
+    </div>
+  </div>
+
+  <!-- BOTTOM TEXT -->
+  <div class="bottom-text">
+    <p>
+
+
+KIMS is a multi-specialty hospital. Our team of professionals at KIMS
+provides world-class treatment and care in the speciality areas of public
+ health, orthopaedics, neurology, surgery, cardiology, gynaecology, and
+  general medicine. We are devoted to and enthusiastic about your health
+   and well-being, and we will be there for you every step of the way.
+    Our team of specialists uses the most up-to-date diagnostics and
+    treatment to provide superior care for patient’s health, from
+    screening to surgical treatments, patients are cared for in outstanding
+    facilities and are backed with cutting-edge imaging and robotic technology when it comes to surgery.
+    </p>
+
+    <h2 class="section-title">
+      Delivering Best Healthcare in Kerala
+    </h2>
+
+    <p class="section-text">
+      Exceptional health care is built on a foundation of inclusion, compassion,
+      and respect for our patients and each other. This is how we provide the best
+      care possible. All your healthcare requirements will be well managed within
+      Kerala thanks to the vast range of specialty departments, competence, and
+      abilities among the medical professionals at <strong>KIMS</strong>.
+      Every member of our team believes in the comprehensive treatment of each
+      patient, which involves improvement of mental, physical, and emotional health.
+      Patients of <strong>KIMS</strong> can rest assured that we deliver a level
+      of quality and depth of service that no one else can match.
+    </p>
+
+  </div>
+
+
+</section>
+<!-- <app-department-doctor></app-department-doctor> -->
+
+<app-footer></app-footer>

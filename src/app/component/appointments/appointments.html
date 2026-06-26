@@ -1,0 +1,160 @@
+<app-main-navbar></app-main-navbar>
+
+<div class="appointments-container">
+  <div class="appointments-grid">
+    <!-- Booking Form Card -->
+    <div class="card booking-card">
+      <div class="card-header">
+        <h2><i class="fa-solid fa-calendar-check"></i> Book an Appointment</h2>
+        <p>Choose your doctor and department to schedule a visit</p>
+      </div>
+
+      <form (ngSubmit)="bookAppointment()" class="booking-form">
+        <div class="form-group">
+          <label for="patientName">Patient Full Name</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input 
+              type="text" 
+              id="patientName"
+              placeholder="Enter your name" 
+              [(ngModel)]="appointmentData.patientName"
+              name="patientName"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="doctorName">Doctor Name</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user-doctor"></i>
+            <input 
+              type="text" 
+              id="doctorName"
+              placeholder="e.g. Dr. John Doe" 
+              [(ngModel)]="appointmentData.doctorName"
+              name="doctorName"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="departmentName">Department</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-stethoscope"></i>
+            <input 
+              type="text" 
+              id="departmentName"
+              placeholder="e.g. Cardiology" 
+              [(ngModel)]="appointmentData.departmentName"
+              name="departmentName"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Appointment Date & Time</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-clock"></i>
+            <input 
+              type="datetime-local" 
+              id="date"
+              [(ngModel)]="appointmentData.date"
+              name="date"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-phone"></i>
+            <input 
+              type="text" 
+              id="phone"
+              placeholder="Enter 10-digit phone number" 
+              [(ngModel)]="appointmentData.phone"
+              name="phone"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message / Symptoms</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-comment-medical"></i>
+            <textarea 
+              id="message"
+              placeholder="Enter any medical details or message for the doctor" 
+              [(ngModel)]="appointmentData.message"
+              name="message"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          Confirm Appointment
+        </button>
+      </form>
+    </div>
+
+    <!-- Appointment History Card -->
+    <div class="card history-card">
+      <div class="card-header">
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> Appointment History</h2>
+        <p>Track your scheduled, completed, or cancelled appointments</p>
+      </div>
+
+      <div class="history-content">
+        <div class="table-responsive" *ngIf="appointmentList.length > 0">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Doctor</th>
+                <th>Department</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Prescription</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let app of appointmentList">
+                <td><strong>{{ app.doctorName }}</strong></td>
+                <td>{{ app.departmentName }}</td>
+                <td>{{ app.date | date:'mediumDate' }}</td>
+                <td>
+                  <span class="badge" [ngClass]="{
+                    'badge-pending': !app.status || app.status === 'Pending',
+                    'badge-confirmed': app.status === 'Confirmed',
+                    'badge-completed': app.status === 'Completed',
+                    'badge-cancelled': app.status === 'Cancelled'
+                  }">
+                    {{ app.status || 'Pending' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="prescription-text" *ngIf="app.prescription">
+                    <i class="fa-solid fa-prescription"></i>
+                    {{ app.prescription }}
+                  </div>
+                  <span *ngIf="!app.prescription" class="no-prescription">No notes/prescription yet</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state" *ngIf="appointmentList.length === 0">
+          <i class="fa-solid fa-folder-open"></i>
+          <p>No appointment records found.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,152 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h2>Create an Account</h2>
+      <p *ngIf="activeTab === 'user'">Join ProHealth to book appointments easily</p>
+      <p *ngIf="activeTab === 'doctor'">Register as a ProHealth Medical Professional</p>
+      <p *ngIf="activeTab === 'admin'">Register as a ProHealth System Administrator</p>
+    </div>
+
+    <!-- Role Selection Tabs -->
+    <div class="role-tabs">
+      <button 
+        type="button"
+        [class.active]="activeTab === 'user'" 
+        (click)="setTab('user')"
+        class="tab-btn">
+        <i class="fa-solid fa-user"></i> Patient
+      </button>
+      <button 
+        type="button"
+        [class.active]="activeTab === 'doctor'" 
+        (click)="setTab('doctor')"
+        class="tab-btn">
+        <i class="fa-solid fa-user-doctor"></i> Doctor
+      </button>
+      <button 
+        type="button"
+        [class.active]="activeTab === 'admin'" 
+        (click)="setTab('admin')"
+        class="tab-btn">
+        <i class="fa-solid fa-user-shield"></i> Admin
+      </button>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        {{ errorMessage }}
+      </div>
+
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-user input-icon"></i>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            [(ngModel)]="name" 
+            placeholder="Enter your full name" 
+            required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-envelope input-icon"></i>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            [(ngModel)]="email" 
+            placeholder="Enter your email" 
+            required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-lock input-icon"></i>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            [(ngModel)]="password" 
+            placeholder="Create a strong password" 
+            required>
+        </div>
+      </div>
+
+      <!-- Admin Verification Code Field -->
+      <div class="form-group" *ngIf="activeTab === 'admin'">
+        <label for="adminSecret">Admin Verification Code</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-key input-icon"></i>
+          <input 
+            type="password" 
+            id="adminSecret" 
+            name="adminSecret" 
+            [(ngModel)]="adminSecret" 
+            placeholder="Enter admin registration secret key" 
+            required>
+        </div>
+      </div>
+
+      <!-- Doctor-specific Fields -->
+      <div class="form-group" *ngIf="activeTab === 'doctor'">
+        <label for="department">Department</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-hospital input-icon"></i>
+          <input 
+            type="text" 
+            id="department" 
+            name="department" 
+            [(ngModel)]="department" 
+            placeholder="e.g., Cardiology, Pediatrics" 
+            required>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="activeTab === 'doctor'">
+        <label for="experience">Experience (Years)</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-stethoscope input-icon"></i>
+          <input 
+            type="number" 
+            id="experience" 
+            name="experience" 
+            [(ngModel)]="experience" 
+            placeholder="Years of experience" 
+            min="0"
+            required>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="activeTab === 'doctor'">
+        <label for="qualification">Qualification</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-user-graduate input-icon"></i>
+          <input 
+            type="text" 
+            id="qualification" 
+            name="qualification" 
+            [(ngModel)]="qualification" 
+            placeholder="e.g., MBBS, MD, PhD" 
+            required>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Register as {{ activeTab | titlecase }}</span>
+        <span *ngIf="isLoading" class="loader"></span>
+      </button>
+
+      <div class="form-footer">
+        <p>Already have an account? <a routerLink="/login">Login here</a></p>
+      </div>
+    </form>
+  </div>
+</div>

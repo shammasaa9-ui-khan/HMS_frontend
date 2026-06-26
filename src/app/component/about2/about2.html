@@ -1,0 +1,160 @@
+<app-main-navbar></app-main-navbar>
+
+<div class="immersive-dept-page" *ngIf="!loading">
+
+  <!-- IMMERSIVE HERO -->
+  <header class="immersive-hero">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-container">
+      <div class="hero-info">
+        <div class="dept-badge-pill">
+          <span class="pulse"></span>
+          {{ departmentName }} Specialization
+        </div>
+        <h1 class="hero-title">{{ departmentDescription?.title || departmentName }}</h1>
+        <p class="hero-lead">
+          {{ departmentDescription?.paragraph || 'Dedicated to providing world-class ' + departmentName + ' healthcare through innovation and compassion.' }}
+        </p>
+        <div class="hero-actions">
+          <button class="action-btn-main" (click)="scrollToTeam()">
+            Meet Our Specialist Team ↓
+          </button>
+          <span class="breadcrumb-alt" routerLink="/department">← Back to Directory</span>
+        </div>
+      </div>
+
+      <div class="hero-stats-floating">
+        <div class="f-stat">
+          <span class="f-val">{{ doctors.length }}</span>
+          <span class="f-lab">Accredited Specialists</span>
+        </div>
+        <div class="f-divider"></div>
+        <div class="f-stat">
+          <span class="f-val">24/7</span>
+          <span class="f-lab">Critical Care Support</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- IMMERSIVE BODY -->
+  <main class="immersive-content">
+
+    <!-- About The Unit -->
+    <section class="unit-intro-section" *ngIf="departmentDescription?.paragraph1 || departmentDescription?.paragraph2">
+      <div class="intro-grid">
+        <div class="intro-text">
+          <span class="sub-intro">Unit Overview</span>
+          <h2>A Heritage of Clinical Excellence</h2>
+          <p>{{ departmentDescription.paragraph1 }}</p>
+          <p *ngIf="departmentDescription.paragraph2">{{ departmentDescription.paragraph2 }}</p>
+        </div>
+        <div class="intro-visual">
+          <div class="visual-card">
+            <span class="v-icon">🏢</span>
+            <h4>State-of-the-Art Unit</h4>
+            <p>Our {{ departmentName }} facilities are equipped with the latest diagnostic and surgical technology.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us (Premium) -->
+    <section class="premium-advantage" *ngIf="reasons.length > 0">
+      <div class="section-lead">
+        <h2>The {{ departmentName }} Advantage</h2>
+        <div class="lead-line"></div>
+      </div>
+      <div class="advantage-grid">
+        <div class="adv-card" *ngFor="let reason of reasons">
+          <span class="adv-icon">{{ reason.icon }}</span>
+          <div class="adv-body">
+            <h3>{{ reason.title }}</h3>
+            <p>{{ reason.text }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Specialists Grid (Impactful) -->
+    <section class="team-showcase" id="specialist-team">
+      <div class="section-lead centered">
+        <span class="sub-lead">Specialist Directory</span>
+        <h2>Our Dedicated Medical Team</h2>
+        <p class="team-intro">Bringing decades of collective experience to your personalized care plan.</p>
+      </div>
+
+      <div class="immersive-team-grid" *ngIf="doctors.length > 0">
+        <div class="team-card-immersive" *ngFor="let doctor of doctors">
+          <div class="team-img-wrap">
+            <img [src]="doctor.image" [alt]="doctor.name" (error)="onImageError($event)" />
+            <div class="team-img-overlay">
+              <span class="t-status" [class.active]="doctor.status === 'Available'">
+                {{ doctor.status || 'Active' }}
+              </span>
+            </div>
+          </div>
+          <div class="team-card-meta">
+            <span class="t-tag">{{ doctor.specialization }}</span>
+            <h3 class="t-name">{{ doctor.name.startsWith('Dr.') ? doctor.name : 'Dr. ' + doctor.name }}</h3>
+            <button class="t-btn-cta" (click)="viewDoctor(doctor._id)">
+              Explore Profile
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="immersive-empty" *ngIf="doctors.length === 0">
+        <span class="e-icon">⚕️</span>
+        <h3>Specialists are currently being localized</h3>
+        <p>Please contact our unit director for immediate consultation referrals.</p>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="immersive-services" *ngIf="services.length > 0">
+      <div class="services-intro">
+        <h2>Advanced Therapeutic Services</h2>
+        <div class="lead-line"></div>
+      </div>
+      <div class="ser-grid-immersive">
+        <div class="ser-card-immersive" *ngFor="let service of services">
+          <div class="ser-head">
+            <span class="ser-dot"></span>
+            <h3>{{ service.title }}</h3>
+          </div>
+          <p>{{ service.description }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section (Clean) -->
+    <section class="immersive-faq" *ngIf="faqs.length > 0">
+      <div class="faq-head">
+        <h2>Guidance & Information</h2>
+        <p>Common questions about our {{ departmentName }} protocols and patient care.</p>
+      </div>
+      <div class="faq-list">
+        <div class="faq-row" *ngFor="let faq of faqs; let i = index" [class.expanded]="activeFaqIndex === i">
+          <div class="faq-trigger" (click)="toggleFaq(i)">
+            <h3>{{ faq.question }}</h3>
+            <span class="plus-icon">{{ activeFaqIndex === i ? '−' : '+' }}</span>
+          </div>
+          <div class="faq-panel">
+            <p>{{ faq.answer }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- <app-footer></app-footer> -->
+</div>
+
+<!-- Loading Transition -->
+<div class="immersive-loader" *ngIf="loading">
+  <div class="pulse-ring"></div>
+  <p>Localizing Unit Data</p>
+</div>

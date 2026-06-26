@@ -1,0 +1,57 @@
+<app-main-navbar></app-main-navbar>
+
+<div class="dept-page">
+
+  <!-- Hero Banner -->
+  <div class="dept-hero">
+    <div class="dept-hero-content">
+      <span class="dept-hero-tag">Medical Excellence</span>
+      <h1>Our Specialized Departments</h1>
+      <p>Discover world-class medical expertise tailored to your specific needs. Experience the pinnacle of healthcare innovation and patient-centered care.</p>
+      
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            placeholder="Search for a department (e.g. Cardiology)..." 
+            (input)="onSearch($event)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading departments...</p>
+  </div>
+
+  <!-- Empty / No Results State -->
+  <div class="empty-state" *ngIf="!loading && filteredDepartments.length === 0">
+    <span class="empty-icon">{{ searchTerm ? '🔍' : '🏥' }}</span>
+    <h3>{{ searchTerm ? 'No matching departments' : 'No departments found' }}</h3>
+    <p>{{ searchTerm ? 'Try searching for another specialty or check back later.' : 'Please visit us again soon for updates.' }}</p>
+  </div>
+
+  <!-- Department Cards Grid -->
+  <div class="dept-grid" *ngIf="!loading && filteredDepartments.length > 0">
+    <div
+      class="dept-card"
+      *ngFor="let dept of filteredDepartments; let i = index"
+      [style.animation-delay]="i * 100 + 'ms'"
+      (click)="viewDepartment(dept.department)">
+
+      <div class="dept-icon">{{ getDepartmentIcon(dept.department) }}</div>
+      <h2 class="dept-name">{{ dept.department }}</h2>
+      <p class="dept-desc">Expert specialists providing advanced care in {{ dept.department }}.</p>
+
+      <button class="dept-btn">
+        View Doctors
+        <span class="arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+</div>

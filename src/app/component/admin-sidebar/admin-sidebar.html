@@ -1,0 +1,106 @@
+<div class="sidebar-container">
+  <div class="sidebar-header">
+    <div class="logo-area">
+      <div class="logo-icon">
+        <i class="fa-solid fa-house-medical"></i>
+      </div>
+      <div class="logo-text">
+        <span class="logo-main">ProHealth</span>
+        <span class="logo-sub">Admin Panel</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <span class="section-label">Main Menu</span>
+      <ul class="nav-list">
+        <li *ngFor="let item of menuItems">
+          <a [routerLink]="item.path" routerLinkActive="active" class="nav-item">
+            <div class="item-icon">
+              <i [class]="item.icon"></i>
+            </div>
+            <span class="item-name">{{ item.name }}</span>
+            <div class="active-indicator"></div>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="nav-section">
+      <span class="section-label">System</span>
+      <ul class="nav-list">
+        <li>
+          <a routerLink="/settings" routerLinkActive="active" class="nav-item">
+            <div class="item-icon">
+              <i class="fa-solid fa-gear"></i>
+            </div>
+            <span class="item-name">Settings</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/login" class="nav-item logout">
+            <div class="item-icon">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </div>
+            <span class="item-name">Logout</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="medical-gallery-banner">
+      <div class="gallery-track">
+        <!-- Staff -->
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1576091160550-2173dad99978?auto=format&fit=crop&w=400" alt="Staff">
+          <div class="gallery-overlay">
+            <span>Our Specialists</span>
+          </div>
+        </div>
+        <!-- Building -->
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=400" alt="Building">
+          <div class="gallery-overlay">
+            <span>Modern Facilities</span>
+          </div>
+        </div>
+        <!-- Patients -->
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=400" alt="Patients">
+          <div class="gallery-overlay">
+            <span>Patient Care</span>
+          </div>
+        </div>
+        <!-- Calendar -->
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1506784914192-5c285645a8ec?auto=format&fit=crop&w=400" alt="Calendar">
+          <div class="gallery-overlay">
+            <span>Appointments</span>
+          </div>
+        </div>
+        <!-- Reports -->
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400" alt="Reports">
+          <div class="gallery-overlay">
+            <span>Medical Records</span>
+          </div>
+        </div>
+        <!-- Analytics -->
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&w=400" alt="Analytics">
+          <div class="gallery-overlay">
+            <span>Health Insights</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="gallery-info">
+        <h4>KIMS Center</h4>
+        <p>Global Healthcare Standards</p>
+      </div>
+    </div>
+  </div>
+</div>

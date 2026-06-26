@@ -1,0 +1,85 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h2>Welcome Back</h2>
+      <p>Secure login to the ProHealth Portal</p>
+    </div>
+
+    <!-- Role Selection Tabs -->
+    <div class="role-tabs">
+      <button 
+        [class.active]="activeTab === 'user'" 
+        (click)="setTab('user')"
+        class="tab-btn">
+        <i class="fa-solid fa-user"></i> Patient
+      </button>
+      <button 
+        [class.active]="activeTab === 'doctor'" 
+        (click)="setTab('doctor')"
+        class="tab-btn">
+        <i class="fa-solid fa-user-doctor"></i> Doctor
+      </button>
+      <button 
+        [class.active]="activeTab === 'admin'" 
+        (click)="setTab('admin')"
+        class="tab-btn">
+        <i class="fa-solid fa-user-shield"></i> Admin
+      </button>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        {{ errorMessage }}
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-envelope input-icon"></i>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            [(ngModel)]="email" 
+            placeholder="Enter your email" 
+            required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-lock input-icon"></i>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            [(ngModel)]="password" 
+            placeholder="Enter your password" 
+            required>
+        </div>
+        <div class="forgot-pwd-link" style="text-align: right; margin-top: 6px;">
+          <a routerLink="/forgot-password" style="font-size: 0.85rem; color: #10b981; text-decoration: none; font-weight: 600;">Forgot Password?</a>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Login as {{ activeTab | titlecase }}</span>
+        <span *ngIf="isLoading" class="loader"></span>
+      </button>
+
+      <div class="form-footer" *ngIf="activeTab === 'user'">
+        <p>Don't have an account? <a routerLink="/register" [queryParams]="{ role: 'user' }">Register here</a></p>
+      </div>
+
+      <div class="form-footer" *ngIf="activeTab === 'doctor'">
+        <p>Don't have a doctor account? <a routerLink="/register" [queryParams]="{ role: 'doctor' }">Register as Doctor</a></p>
+      </div>
+
+      <div class="form-footer" *ngIf="activeTab === 'admin'">
+        <p>Don't have an admin account? <a routerLink="/register" [queryParams]="{ role: 'admin' }">Register as Admin</a></p>
+      </div>
+    </form>
+  </div>
+</div>

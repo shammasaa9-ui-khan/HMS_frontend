@@ -1,0 +1,98 @@
+<app-main-navbar></app-main-navbar>
+
+<div class="immersive-profile-wrapper" *ngIf="doctor">
+
+  <div class="profile-hero-section">
+    <div class="hero-image-side">
+      <img [src]="doctor.image || 'https://cdn.pixabay.com/photo/2023/12/21/06/23/doctor-8461303_1280.jpg'"
+        [alt]="doctor.name" class="full-hero-img" />
+      <div class="image-overlay-badge">
+        <span class="status-pill" [ngClass]="doctor.status === 'Available' ? 'available' : 'unavailable'">
+          {{ doctor.status }}
+        </span>
+      </div>
+    </div>
+
+    <div class="hero-content-side">
+      <div class="content-header">
+        <span class="specialist-tag">Medical Specialist</span>
+        <p class="doctor-title">{{ doctor.name.startsWith('Dr.') ? doctor.name : 'Dr. ' + doctor.name }}</p>
+        <div class="doctor-badges-row">
+          <span class="badge verified">✓ Certified Specialist</span>
+          <span class="badge dept">{{ doctor.department }} Unit</span>
+        </div>
+      </div>
+
+      <div class="stats-ribbon">
+        <div class="ribbon-item">
+          <span class="ribbon-icon">⏳</span>
+          <div class="ribbon-text">
+            <span class="val">{{ doctor.experience }}+ Years</span>
+            <span class="lab">Experience</span>
+          </div>
+        </div>
+        <div class="ribbon-item">
+          <span class="ribbon-icon">📱</span>
+          <div class="ribbon-text">
+            <span class="val">{{ doctor.phone }}</span>
+            <span class="lab">Emergency Line</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="expanded-info-grid">
+        <div class="info-card">
+          <div class="card-head">
+            <span class="icon">🏥</span>
+            <h3>Clinical Focus</h3>
+          </div>
+          <p>{{ doctor.specialization }}</p>
+        </div>
+        <div class="info-card">
+          <div class="card-head">
+            <span class="icon">⚕️</span>
+            <h3>Primary Department</h3>
+          </div>
+          <p>{{ doctor.department }} Department</p>
+        </div>
+      </div>
+
+      <div class="profile-bio">
+        <h2>About</h2>
+        <p>
+          Recognized as a leading expert in {{ doctor.specialization }}, Dr. {{ doctor.name }} has dedicated
+          {{ doctor.experience }} years to clinical excellence and patient-focused care within the
+          {{ doctor.department }} department. Our facility takes pride in hosting specialists
+          who prioritize evidence-based results and compassionate treatment.
+        </p>
+      </div>
+
+      <!-- Coordination Section -->
+      <div class="coordination-notice" *ngIf="!canBook">
+        <div class="notice-inner">
+          <div class="notice-icon">ⓘ</div>
+          <div class="notice-body">
+            <h4>Front Desk Coordination Required</h4>
+            <p>Direct digital booking is currently paused for this specialist. Please contact our administrative unit.</p>
+          </div>
+        </div>
+
+        <div class="dept-premium-section" *ngIf="departmentDescription">
+          <h5>About the {{ departmentDescription.department }} Unit</h5>
+          <p>{{ departmentDescription.paragraph }}</p>
+        </div>
+      </div>
+
+      <div class="cta-actions">
+        <button class="cta-btn secondary" (click)="goHome()">
+          <span>Back to Directory</span>
+        </button>
+        <button class="cta-btn primary" (click)="goBooking()" *ngIf="canBook">
+          <span>Initialize Booking Now</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <app-footer></app-footer> -->
+</div>

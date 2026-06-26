@@ -1,0 +1,224 @@
+<div class="dashboard-layout" *ngIf="!loading">
+
+  <!-- ===== SIDEBAR ===== -->
+  <app-doctor-sidebar></app-doctor-sidebar>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- ===== HEADER ===== -->
+    <header class="topbar">
+      <div class="greeting-area">
+        <span class="date-tag">{{ today | date:'fullDate' }}</span>
+        <h1>Welcome Back, {{ doctorProfile.name }}</h1>
+        <p class="subtitle">{{ doctorProfile.specialization || 'Medical Specialist' }} • {{ doctorProfile.department || 'General' }} Department</p>
+      </div>
+
+      <div class="topbar-right">
+        <div class="admin-profile">
+          <div class="avatar">
+            <img *ngIf="doctorProfile.image" [src]="doctorProfile.image" [alt]="doctorProfile.name" />
+            <span *ngIf="!doctorProfile.image" class="avatar-initial">{{ doctorProfile.name.charAt(0) | uppercase }}</span>
+          </div>
+          <div class="profile-text">
+            <h4>{{ doctorProfile.name }}</h4>
+            <span>Specialist Physician</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== PREMIUM WIDGETS ===== -->
+    <section class="stats-grid">
+      <div class="glass-card stat-card">
+        <div class="stat-header">
+          <div class="stat-icon patients">
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+        <div class="stat-info">
+          <h2>{{ totalPatients }}</h2>
+          <h4>Total Patients</h4>
+          <p>Consulted patient history</p>
+        </div>
+      </div>
+
+      <div class="glass-card stat-card">
+        <div class="stat-header">
+          <div class="stat-icon today">
+            <i class="fa-solid fa-calendar-day"></i>
+          </div>
+        </div>
+        <div class="stat-info">
+          <h2>{{ todayAppointments }}</h2>
+          <h4>Today's Appts</h4>
+          <p>Assigned for today</p>
+        </div>
+      </div>
+
+      <div class="glass-card stat-card">
+        <div class="stat-header">
+          <div class="stat-icon completed">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+        </div>
+        <div class="stat-info">
+          <h2>{{ completedAppointments }}</h2>
+          <h4>Completed</h4>
+          <p>Successful consultations</p>
+        </div>
+      </div>
+
+      <div class="glass-card stat-card">
+        <div class="stat-header">
+          <div class="stat-icon pending">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </div>
+        </div>
+        <div class="stat-info">
+          <h2>{{ pendingAppointments }}</h2>
+          <h4>Pending List</h4>
+          <p>Awaiting consultation</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== APPOINTMENTS TABLE ===== -->
+    <section class="appointments-section">
+      <div class="section-header">
+        <h3>Assigned Consultations</h3>
+        <p>Manage your daily patient schedules, updates, and prescriptions</p>
+      </div>
+
+      <div class="glass-card control-table-wrapper" *ngIf="recentAppointments.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>Patient Name</th>
+              <th>Date</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Prescription</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let app of recentAppointments">
+              <td>
+                <div class="patient-cell">
+                  <div class="p-avatar">{{ app.patientName?.charAt(0) | uppercase }}</div>
+                  <span><strong>{{ app.patientName }}</strong></span>
+                </div>
+              </td>
+              <td>
+                <div class="time-cell">
+                  <i class="fa-solid fa-calendar-day"></i>
+                  <span>{{ app.date | date:'mediumDate' }}</span>
+                </div>
+              </td>
+              <td>{{ app.phone }}</td>
+              <td>
+                <span class="badge" [ngClass]="getStatusClass(app.status)">
+                  {{ app.status || 'Pending' }}
+                </span>
+              </td>
+              <td>
+                <span *ngIf="app.prescription" class="prescription-preview" [title]="app.prescription">
+                  {{ app.prescription | slice:0:30 }}{{ app.prescription.length > 30 ? '...' : '' }}
+                </span>
+                <span *ngIf="!app.prescription" class="no-prescription">None</span>
+              </td>
+              <td>
+                <div class="management-actions">
+                  <!-- View Details / Add Prescription -->
+                  <button class="action-btn edit" (click)="selectAppointment(app)" title="View & Add Prescription">
+                    <i class="fa-solid fa-file-medical"></i> Details
+                  </button>
+
+                  <!-- Quick Status Updates -->
+                  <select [value]="app.status || 'Pending'" (change)="updateStatus(app, $any($event.target).value)" class="status-select">
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="empty-state" *ngIf="recentAppointments.length === 0">
+        <i class="fa-solid fa-calendar-xmark"></i>
+        <p>No appointments assigned to you yet.</p>
+      </div>
+    </section>
+
+    <!-- Expanded Modal / Patient Details & Prescription -->
+    <div class="modal-overlay" *ngIf="selectedAppointment" (click)="closeModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Patient Consultation Record</h3>
+          <button class="close-btn" (click)="closeModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Patient Info -->
+          <div class="patient-info-card">
+            <h4>Patient Details</h4>
+            <div class="info-grid">
+              <div>
+                <span class="info-label">Name:</span>
+                <span class="info-value">{{ selectedAppointment.patientName }}</span>
+              </div>
+              <div>
+                <span class="info-label">Phone:</span>
+                <span class="info-value">{{ selectedAppointment.phone }}</span>
+              </div>
+              <div>
+                <span class="info-label">Consultation Date:</span>
+                <span class="info-value">{{ selectedAppointment.date | date:'mediumDate' }}</span>
+              </div>
+              <div>
+                <span class="info-label">Current Status:</span>
+                <span class="badge" [ngClass]="getStatusClass(selectedAppointment.status)">
+                  {{ selectedAppointment.status || 'Pending' }}
+                </span>
+              </div>
+            </div>
+            
+            <div class="patient-message" *ngIf="selectedAppointment.message">
+              <span class="info-label">Reason for Visit / Message:</span>
+              <p class="message-text">"{{ selectedAppointment.message }}"</p>
+            </div>
+          </div>
+
+          <!-- Prescription Form -->
+          <div class="prescription-section">
+            <h4>Prescription & Medical Notes</h4>
+            <textarea 
+              [(ngModel)]="prescriptionText" 
+              placeholder="Enter prescription instructions, diagnosis, and medical advice here..."
+              class="prescription-textarea"
+              rows="6"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+          <button class="btn btn-primary" (click)="savePrescription()">
+            <i class="fa-solid fa-save"></i> Save Consultation Record
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="loading" class="loading-state">
+  <div class="spinner"></div>
+  <p>Loading your doctor dashboard...</p>
+</div>

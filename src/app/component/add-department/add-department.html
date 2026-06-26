@@ -1,0 +1,57 @@
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <!-- MAIN CONTENT -->
+  <div class="form-page-content">
+    
+    <div class="form-card-lux animate-fade-in">
+      <div class="form-header">
+        <div class="header-icon">
+          <i class="fa-solid fa-plus-circle"></i>
+        </div>
+        <div class="header-text">
+          <h2>Initialize Sector</h2>
+          <p>Register a new specialized medical department.</p>
+        </div>
+      </div>
+
+      <div class="form-body">
+        <div class="input-group">
+          <label>Department Designation</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-building-medical"></i>
+            <input type="text" placeholder="e.g. Neurology Unit" [(ngModel)]="departmentData.name">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Sector Mission / Description</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-feather-pointed"></i>
+            <textarea placeholder="Outline the clinical scope and objectives..." [(ngModel)]="departmentData.description"></textarea>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Sector Branding (Image URL)</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-palette"></i>
+            <input type="text" placeholder="https://hospital-assets.com/dept-hero.jpg" [(ngModel)]="departmentData.image">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-cancel" routerLink="/dp">Discard</button>
+          <button class="btn-submit" (click)="addDepartment()" [disabled]="loading">
+            <span *ngIf="!loading">Initialize Sector</span>
+            <span *ngIf="loading">Processing...</span>
+            <i class="fa-solid fa-arrow-right-to-bracket" *ngIf="!loading"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

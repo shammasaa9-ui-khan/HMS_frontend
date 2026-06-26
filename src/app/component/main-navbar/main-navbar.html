@@ -1,0 +1,76 @@
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="logo">
+    <span class="logo-icon">⦿</span>
+    <span class="logo-text">ProHealth</span>
+  </div>
+
+  <ul class="nav-links" [class.active]="menuOpen">
+    <li (click)="Home()"><a class="active">Home</a></li>
+    <li (click)="about()"><a>About</a></li>
+    <li (click)="Department()"><a>Find Department</a></li>
+    <li (click)="goToBooking()"><a>Book Appointment</a></li>
+    <!-- Dashboard Link for Admins -->
+    <li *ngIf="isLoggedIn && userRole === 'admin'"><a routerLink="/admin">Admin Panel</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <!-- Login Button (shown if not logged in) -->
+    <button *ngIf="!isLoggedIn" class="login-btn" (click)="login()">
+      <i class="fa-solid fa-user-plus"></i> Login
+    </button>
+
+    <!-- Profile Icon (shown if logged in) -->
+    <div *ngIf="isLoggedIn" class="profile-container">
+      <div class="profile-icon" [title]="'View/Edit Profile (' + userName + ')'" (click)="toggleDropdown($event)" style="cursor: pointer;">
+        {{ userInitial }}
+      </div>
+
+      <!-- Profile Dropdown Menu -->
+      <div class="profile-dropdown" *ngIf="dropdownOpen">
+        <div class="dropdown-header">
+          <div class="user-avatar">{{ userInitial }}</div>
+          <div class="user-info">
+            <span class="user-name">{{ userName }}</span>
+            <span class="user-role">{{ userRole | titlecase }}</span>
+          </div>
+        </div>
+        <div class="dropdown-divider"></div>
+        <ul class="dropdown-items">
+          <li>
+            <a routerLink="/profile" (click)="closeDropdown()">
+              <i class="fa-solid fa-user"></i> My Profile
+            </a>
+          </li>
+          <li *ngIf="userRole === 'doctor'">
+            <a routerLink="/doctor-dashboard" (click)="closeDropdown()">
+              <i class="fa-solid fa-chart-line"></i> Dashboard
+            </a>
+          </li>
+          <li *ngIf="userRole === 'user' || userRole === ''">
+            <a routerLink="/user-dashboard" (click)="closeDropdown()">
+              <i class="fa-solid fa-chart-line"></i> Dashboard
+            </a>
+          </li>
+          <li *ngIf="userRole === 'admin'">
+            <a routerLink="/admin" (click)="closeDropdown()">
+              <i class="fa-solid fa-gauge"></i> Admin Panel
+            </a>
+          </li>
+          <div class="dropdown-divider"></div>
+          <li>
+            <a (click)="onLogoutClick()">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <button class="logout-btn" (click)="logout()" title="Logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <i class="fa-solid fa-bars menu-toggle icon" (click)="toggleMenu()"></i>
+  </div>
+</nav>

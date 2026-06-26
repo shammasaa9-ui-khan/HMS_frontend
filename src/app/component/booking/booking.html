@@ -1,0 +1,63 @@
+<div class="form-container">
+  <h2>Doctor Appointment Booking</h2>
+
+  <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+
+    <!-- Patient Name -->
+    <label>Patient Name</label>
+    <input type="text" formControlName="patientName">
+    <small class="error" *ngIf="bookingForm.get('patientName')?.touched && bookingForm.get('patientName')?.invalid">
+      Patient name is required
+    </small>
+
+    <!-- Phone -->
+    <label>Phone Number</label>
+    <input type="tel" formControlName="phone">
+    <small class="error" *ngIf="bookingForm.get('phone')?.touched && bookingForm.get('phone')?.errors?.['required']">
+      Phone number is required
+    </small>
+    <small class="error" *ngIf="bookingForm.get('phone')?.errors?.['pattern']">
+      Enter valid 10 digit number
+    </small>
+
+    <!-- Email -->
+    <label>Email (Optional)</label>
+    <input type="email" formControlName="email">
+    <small class="error" *ngIf="bookingForm.get('email')?.errors?.['email']">
+      Enter valid email
+    </small>
+
+    <!-- Doctor -->
+    <!-- <label>Select Doctor</label>
+    <select formControlName="doctor">
+      <option value="">-- Select department --</option>
+      <option *ngFor="let doc of department" [value]="doc">
+        {{ doc }}
+      </option>
+    </select> -->
+    <!-- <small class="error" *ngIf="bookingForm.get('doctor')?.touched && bookingForm.get('doctor')?.invalid">
+      Please select a doctor
+    </small> -->
+
+    <!-- Date -->
+    <!-- <label>Select Date</label>
+    <input type="date" formControlName="date">
+    <small class="error" *ngIf="bookingForm.get('date')?.touched && bookingForm.get('date')?.invalid">
+      Date is required
+    </small> -->
+
+    <!-- Time -->
+    <!-- <label>Select Time</label>
+    <input type="time" formControlName="time">
+    <small class="error" *ngIf="bookingForm.get('time')?.touched && bookingForm.get('time')?.invalid">
+      Time is required
+    </small> -->
+
+    <!-- Message -->
+    <!-- <label>Problem / Message (Optional)</label>
+    <textarea rows="3" formControlName="message"></textarea>
+
+    <button (click)="just()" type="submit" >Book Appointment</button>
+
+  </form> -->
+<!-- </div> -->

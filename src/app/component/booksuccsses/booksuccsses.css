@@ -1,0 +1,107 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--gradient-mint);
+}
+
+.success-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 30px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  padding: 60px 40px;
+  border-radius: 32px;
+  text-align: center;
+  box-shadow: var(--shadow-premium);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.checkmark {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 32px;
+  border-radius: 30px;
+  background: var(--gradient-emerald);
+  color: white;
+  font-size: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+  animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+h2 {
+  font-family: 'Outfit', sans-serif;
+  color: var(--primary);
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+p {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  font-weight: 500;
+}
+
+.buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+button {
+  padding: 16px 32px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.primary {
+  background: var(--gradient-emerald);
+  color: white;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+
+.primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+}
+
+.secondary {
+  background: #f1f5f9;
+  color: var(--primary);
+}
+
+.secondary:hover {
+  background: var(--primary);
+  color: #ffffff;
+  transform: translateY(-4px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

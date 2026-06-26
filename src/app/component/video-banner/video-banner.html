@@ -1,0 +1,60 @@
+<section class="video-hero" aria-label="Hospital Video Banner">
+  <div class="video-container">
+    <video
+      #heroVideo
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      [muted]="true"
+      poster="https://images.pexels.com/photos/263402/pexels-photo-263402.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      class="hero-video">
+      <source [src]="safeVideoUrl" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="cinematic-overlay"></div>
+    <div class="grain-overlay"></div>
+  </div>
+
+  <!-- Decorative Floating Particles -->
+  <div class="particles-container">
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+  </div>
+
+  <div class="hero-content-wrapper">
+    <div class="hero-content">
+      <div class="trust-badge">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Trusted by 1M+ Patients</span>
+      </div>
+
+      <h1 class="hero-title">
+        {{ title }}
+      </h1>
+
+      <p class="hero-subtitle">
+        {{ subtitle }}
+      </p>
+
+      <div class="cta-group">
+        <!-- <button class="btn-cta-primary" [routerLink]="ctaLink">
+          {{ ctaText }}
+        </button> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Premium Scroll Indicator -->
+  <div class="scroll-indicator">
+    <div class="mouse">
+      <div class="wheel"></div>
+    </div>
+    <div class="scroll-text">
+      <span>SCROLL</span>
+      <div class="line"></div>
+    </div>
+  </div>
+</section>

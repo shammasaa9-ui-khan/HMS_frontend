@@ -1,0 +1,95 @@
+<div class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+  <app-admin-sidebar></app-admin-sidebar>
+
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ================= HEADER ================= -->
+    <div class="page-header">
+
+      <div>
+        <h2>Doctors Management</h2>
+        <span class="count">
+          Total Doctors : {{ doctors?.length }}
+        </span>
+      </div>
+
+      <button class="add-btn" (click)="addDoctor()">
+        + Add Doctor
+      </button>
+
+    </div>
+
+
+    <!-- ================= DOCTOR TABLE CARD ================= -->
+    <div class="doctor-table">
+
+      <div class="doctor-row header">
+        <span>Doctor</span>
+        <span>Department</span>
+        <span>Experience</span>
+        <span>Contact</span>
+        <span>Status</span>
+        <span>Actions</span>
+      </div>
+
+
+      <!-- DATA ROW -->
+      <div class="doctor-row"
+           *ngFor="let doctor of doctors">
+
+        <!-- PROFILE -->
+        <div class="doctor-profile">
+          <div class="avatar">
+            <img *ngIf="doctor.image" [src]="doctor.image" [alt]="doctor.name" class="avatar-img">
+            <span *ngIf="!doctor.image">{{ doctor.name.charAt(0) }}</span>
+          </div>
+
+          <div>
+            <h4>{{ doctor.name }}</h4>
+            <p>{{ doctor.specialization }}</p>
+          </div>
+        </div>
+
+
+        <span>{{ doctor.department }}</span>
+
+        <span>
+          {{ doctor.experience }} Years
+        </span>
+
+        <span>
+          +91 {{ doctor.phone }}
+        </span>
+
+
+        <span class="status"
+          [ngClass]="doctor.status === 'Available'
+          ? 'available'
+          : 'unavailable'">
+
+          {{ doctor.status }}
+
+        </span>
+
+
+        <!-- ACTION BUTTONS -->
+        <div class="management-actions">
+          <button class="action-btn edit" (click)="Edit(doctor._id); $event.stopPropagation()" title="Edit Profile">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button class="action-btn delete" (click)="detete(doctor._id); $event.stopPropagation()" title="Delete Record">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
